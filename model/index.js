@@ -1,15 +1,89 @@
-// const fs = require('fs/promises')
-// const contacts = require('./contacts.json')
+const fs = require('fs/promises')
+const path = require('path')
+const { v4: genereteId } = require('uuid')
 
-const listContacts = async () => {}
+const contactsPath = path.join(__dirname, './contacts.json')
 
-const getContactById = async (contactId) => {}
+const listContacts = async () => {
+  try {
+    const contacts = await fs.readFile(contactsPath)
+    return JSON.parse(contacts)
+  } catch (error) {
+    error.message = 'Error: cannot read contacts file'
+  }
+}
 
-const removeContact = async (contactId) => {}
+const getContactById = async (contactId) => {
+  try {
+    const contacts = await listContacts()
+    const idx = contacts.findIndex(
+      contact => contact.id.toString() === contactId.toString(),
+    )
 
-const addContact = async (body) => {}
+    if (idx === -1) {
+      throw new Error('Error: ID is incorrect')
+    }
+    return contacts[idx]
+  } catch (error) {
+    console.log(error.message.red)
+  }
+}
 
-const updateContact = async (contactId, body) => {}
+const removeContact = async (contactId) => {
+  try {
+    const contacts = await listContacts()
+    const idx = contacts.findIndex(contact => contact.id.toString() === contactId.toString())
+    if (idx === -1) {
+      throw new Error('Error: ID is incorrect')
+    }
+
+    const newContacts = contacts.filter(contact => contact.id.toString() !== contactId.toString())
+    const str = JSON.stringify(newContacts)
+    await fs.writeFile(contactsPath, str)
+    return true
+  } catch (error) {
+    console.log(error.message.red)
+  }
+}
+
+const addContact = async (body) => {
+  try {
+    const { name, email, phone } = body
+    const newContact = {
+      id: genereteId(),
+      name,
+      email,
+      phone,
+    }
+    const contacts = await listContacts()
+    const newContacts = [...contacts, newContact]
+    const str = JSON.stringify(newContacts)
+    await fs.writeFile(contactsPath, str)
+
+    return newContact
+  } catch (error) {
+    console.log(error.message.red)
+  }
+}
+
+const updateContact = async (contactId, body) => {
+  try {
+    const contacts = await listContacts()
+    const idx = contacts.findIndex(contact => contact.id.toString() === contactId.toString())
+    if (idx === -1) {
+      throw new Error('Error: ID is incorrect')
+    }
+
+    for (const key in body) {
+      contacts[idx][key] = body[key]
+    }
+
+    await fs.writeFile(contactsPath, JSON.stringify(contacts))
+    return contacts[idx]
+  } catch (error) {
+    console.log(error.message.red)
+  }
+}
 
 module.exports = {
   listContacts,
