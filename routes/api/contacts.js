@@ -10,7 +10,7 @@ const {
   controllerWrapper,
   validationStatusContact
 } = require('../../middlewares')
-const { contact: ctrl } = require('../../controllers')
+const { contacts: ctrl } = require('../../controllers')
 
 const router = express.Router()
 
