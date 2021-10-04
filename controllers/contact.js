@@ -3,7 +3,7 @@ const { NotFound } = require('http-errors')
 const { sendSuccessRes } = require('../helpers')
 const { Contact } = require('../models')
 
-const getAll = async (req, res) => {
+const listContacts = async (req, res) => {
   const result = await Contact.find({}, 'name favorite phone email')
   sendSuccessRes(res, { result })
 }
@@ -51,7 +51,7 @@ const removeContactById = async (req, res) => {
 }
 
 module.exports = {
-  getAll,
+  listContacts,
   getContactById,
   addContact,
   updateContactById,
