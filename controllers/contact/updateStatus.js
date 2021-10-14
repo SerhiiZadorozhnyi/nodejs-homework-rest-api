@@ -8,7 +8,6 @@ const updateStatus = async (req, res) => {
   const owner = req.user._id
   const { favorite } = req.body
   const result = await Contact.findOneAndUpdate(
-  // findByIdAndUpdate(
     { _id: contactId, owner },
     { favorite },
     { new: true }
