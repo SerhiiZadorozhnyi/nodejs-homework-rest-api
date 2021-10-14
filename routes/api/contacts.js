@@ -2,20 +2,20 @@ const express = require('express')
 
 const router = express.Router()
 
-const { joiSchema, joiSchemaStatusContact } = require('../../models/contact')
-const { validation, controllerWrapper, validationStatusContact } = require('../../middlewares')
+const { joiSchema } = require('../../models/contact')
+const { validation, controllerWrapper, authenticate } = require('../../middlewares')
 const { contacts: ctrl } = require('../../controllers')
 
-router.get('/', controllerWrapper(ctrl.getAll))
+router.get('/', controllerWrapper(authenticate), controllerWrapper(ctrl.getAll))
 
-router.get('/:contactId', controllerWrapper(ctrl.getById))
+router.get('/:contactId', controllerWrapper(authenticate), controllerWrapper(ctrl.getById))
 
-router.post('/', validation(joiSchema), controllerWrapper(ctrl.add))
+router.post('/', controllerWrapper(authenticate), validation(joiSchema), controllerWrapper(ctrl.add))
 
-router.put('/:contactId', validation(joiSchema), controllerWrapper(ctrl.updateById))
+router.put('/:contactId', controllerWrapper(authenticate), validation(joiSchema), controllerWrapper(ctrl.updateById))
 
-router.patch('/:contactId/favorite', validationStatusContact(joiSchemaStatusContact), controllerWrapper(ctrl.updateStatus))
+router.patch('/:contactId/favorite', controllerWrapper(authenticate), controllerWrapper(ctrl.updateStatus))
 
-router.delete('/:contactId', controllerWrapper(ctrl.removeById))
+router.delete('/:contactId', controllerWrapper(authenticate), controllerWrapper(ctrl.removeById))
 
 module.exports = router

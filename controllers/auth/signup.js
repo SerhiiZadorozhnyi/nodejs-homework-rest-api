@@ -3,10 +3,9 @@ const bcrypt = require('bcryptjs')
 
 const { User } = require('../../models')
 
-const register = async(req, res) => {
+const signup = async(req, res) => {
   const { email, password } = req.body
   const user = await User.findOne({ email })
-
   if (user) {
     throw new Conflict('Already registered')
   }
@@ -20,4 +19,4 @@ const register = async(req, res) => {
   })
 }
 
-module.exports = register
+module.exports = signup

@@ -1,9 +1,13 @@
-const register = require('./register')
+const signup = require('./signup')
 const login = require('./login')
 const logout = require('./logout')
+const current = require('./current')
+const subscription = require('./subscription')
 
 module.exports = {
-  register,
+  signup,
   login,
-  logout
+  logout,
+  current,
+  subscription
 }
