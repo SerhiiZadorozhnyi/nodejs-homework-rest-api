@@ -3,13 +3,13 @@ const Joi = require('joi')
 
 const nameRegexp = /^[a-z ,.'-]+$/i
 const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-// const phoneRegexp = /^\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}$/
+const phoneRegexp = /^\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}$/
 
 const contactSchema = Schema({
   name: {
     type: String,
     required: [true, 'Set name for contact'],
-    // unique: true,
+    unique: true,
     match: nameRegexp
   },
   email: {
@@ -22,7 +22,7 @@ const contactSchema = Schema({
     type: String,
     required: [true, 'Set phone-number for contact'],
     unique: true,
-    // match: phoneRegexp
+    match: phoneRegexp
   },
   favorite: {
     type: Boolean,
