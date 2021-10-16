@@ -1,4 +1,3 @@
-// const { BadReques } = require('http-errors')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Unauthorized } = require('http-errors')
