@@ -1,8 +1,14 @@
 const express = require('express')
 
-const { validation, controllerWrapper, authenticate } = require('../../middlewares')
+const {
+  validation,
+  controllerWrapper,
+  authenticate,
+  upload
+} = require('../../middlewares')
 const { joiSchema, joiSchemaSub } = require('../../models/user')
 const { auth: ctrl } = require('../../controllers')
+const { routes } = require('../../app')
 
 const router = express.Router()
 
@@ -15,5 +21,7 @@ router.get('/logout', controllerWrapper(authenticate), controllerWrapper(ctrl.lo
 router.get('/current', controllerWrapper(authenticate), controllerWrapper(ctrl.current))
 
 router.get('/', controllerWrapper(authenticate), validation(joiSchemaSub), controllerWrapper(ctrl.subscription))
+
+routes.path('/avatars', controllerWrapper(authenticate), upload.single('avatar'), controllerWrapper(ctrl.updateAvatar))
 
 module.exports = router
