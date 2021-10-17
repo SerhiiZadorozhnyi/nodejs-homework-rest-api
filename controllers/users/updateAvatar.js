@@ -1,6 +1,6 @@
-const { NotExtended } = require('http-errors')
 const { User } = require('../../models')
-const { fs } = require('express')
+const { fs } = require('fs')
+const { path } = require('path')
 
 const updateAvatar = async(req, res, next) => {
   const { _id } = req.user
