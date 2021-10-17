@@ -22,7 +22,7 @@ const userSchema = Schema({
   },
   avatarUrl: {
     type: String,
-    default: ''
+    default: null
   },
   token: {
     type: String,
