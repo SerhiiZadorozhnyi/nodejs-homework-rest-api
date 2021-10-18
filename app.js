@@ -5,7 +5,6 @@ require('dotenv').config()
 
 const authRouter = require('./routes/api/auth')
 const contactsRouter = require('./routes/api/contacts')
-const avatarRouter = require('./routes/api/users')
 
 const app = express()
 
@@ -18,7 +17,6 @@ app.use(express.static('public'))
 
 app.use('/api/contacts', contactsRouter)
 app.use('/api/users', authRouter)
-app.use('api/avatar', avatarRouter)
 
 app.use((req, res) => {
   res.status(404).json({
