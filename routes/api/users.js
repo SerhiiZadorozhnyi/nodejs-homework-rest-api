@@ -9,6 +9,6 @@ const { users: ctrl } = require('../../controllers')
 
 const router = express.Router()
 
-router.path('/avatars', controllerWrapper(authenticate), upload.single('avatar'), controllerWrapper(ctrl.updateAvatar))
+router.patсh('/avatars', controllerWrapper(authenticate), upload.single('avatar'), controllerWrapper(ctrl.updateAvatar))
 
 module.exports = router
