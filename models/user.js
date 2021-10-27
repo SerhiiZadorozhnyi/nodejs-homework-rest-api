@@ -7,7 +7,8 @@ const userSchema = Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],
-    unique: true
+    unique: true,
+    match: emailRegexp
   },
   password: {
     type: String,
@@ -19,6 +20,10 @@ const userSchema = Schema({
     enum: ['starter', 'pro', 'business'],
     default: 'starter'
   },
+  avatarUrl: {
+    type: String,
+    default: null
+  },
   token: {
     type: String,
     default: null
@@ -27,7 +32,8 @@ const userSchema = Schema({
 
 const joiSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required()
+  password: Joi.string().min(6).required(),
+  avatarUrl: Joi.string()
 })
 
 const joiSchemaSub = Joi.object({
