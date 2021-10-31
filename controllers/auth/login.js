@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Unauthorized } = require('http-errors')
-
 const { User } = require('../../models')
 
 const login = async (req, res) => {
@@ -10,6 +9,10 @@ const login = async (req, res) => {
 
   if (!user) {
     throw new Unauthorized('Email or password is wrong')
+  }
+
+  if (!user.verify) {
+    throw new Unauthorized('Email not confirmed')
   }
 
   const hashPassword = user.password

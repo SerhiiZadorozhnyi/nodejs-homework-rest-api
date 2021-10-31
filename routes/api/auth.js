@@ -6,7 +6,11 @@ const {
   authenticate,
   upload
 } = require('../../middlewares')
-const { joiSchema, joiSchemaSub } = require('../../models/user')
+const {
+  joiSchema,
+  joiSchemaSub,
+  joiSchemaVerify
+} = require('../../models/user')
 const { auth: ctrl } = require('../../controllers')
 
 const router = express.Router()
@@ -22,5 +26,9 @@ router.get('/current', controllerWrapper(authenticate), controllerWrapper(ctrl.c
 router.get('/', controllerWrapper(authenticate), validation(joiSchemaSub), controllerWrapper(ctrl.subscription))
 
 router.patch('/avatars', controllerWrapper(authenticate), upload.single('avatar'), controllerWrapper(ctrl.updateAvatar))
+
+router.get('/verify/:verifyToken', controllerWrapper(ctrl.verify))
+
+router.post('/verify', validation(joiSchemaVerify), controllerWrapper(ctrl.reVerify))
 
 module.exports = router

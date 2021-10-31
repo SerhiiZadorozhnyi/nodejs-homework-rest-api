@@ -1,25 +1,24 @@
-const { User } = require('../../models')
-const { fs } = require('fs')
-const { path } = require('path')
+const fs = require('fs/promises')
+const path = require('path')
+const Jimp = require('jimp')
 
-const updateAvatar = async(req, res, next) => {
-  const { _id } = req.user
-  const { path: tempDir, originalname } = req.file
-  const [extension] = originalname.split('.').reverse()
-  const filename = `${_id}.${extension}`
-  const uploadDir = path.join(__dirname, '../../', 'public\\avatars', filename)
+const { User } = require('../../models')
+
+const avatarsDir = path.join(__dirname, '../../", "public/avatars')
+
+const updateAvatar = async (req, res) => {
+  const { path: tempPath, originalname } = req.file
+  const uploadPath = path.join(avatarsDir, originalname)
   try {
-    await fs.rename(tempDir, uploadDir)
-    const image = path.join('avatars', filename)
-    await User.findByIdAndUpdate(_id, { avatarURL: image })
-    res.json({
-      status: 'success',
-      code: 201,
-      message: 'Update avatar success'
-    })
+    const file = await Jimp.read(tempPath)
+    await file.resize(250, 250).write(tempPath)
+    await fs.rename(tempPath, uploadPath)
+    const avatar = `/avatars/${originalname}`
+    await User.findByIdAndUpdate(req.user._id, { avatarURL: avatar })
+    res.json({ status: 'success', code: 200, data: { avatarURL: avatar } })
   } catch (error) {
-    await fs.unlink(tempDir)
-    next(error)
+    await fs.unlink(tempPath)
+    throw error
   }
 }
 
